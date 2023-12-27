@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%- locals.title %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const allButtons = document.querySelectorAll(".searchBtn");
+        const searchBar = document.querySelector(".searchBar");
+        const searchInput = document.getElementById("searchInput");
+        const searchClose = document.getElementById("searchClose");
+
+        for (var i = 0; i < allButtons.length; i++) {
+          allButtons[i].addEventListener("click", function () {
+            searchBar.style.visibility = "visible";
+            searchBar.classList.add("open");
+            this.setAttribute("aria-expanded", "true");
+            searchInput.focus();
+          });
+        }
+
+        searchClose.addEventListener("click", function () {
+          searchBar.style.visibility = "hidden";
+          searchBar.classList.remove("open");
+          this.setAttribute("aria-expanded", "false");
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+   <%- include('../partials/search.ejs') %> 
+    <div class="container">
+      <%- include('../partials/header.ejs') %> 
+      <%- body %>
+     <%- include('../partials/footer.ejs') %>
+  </body>
+</html>
