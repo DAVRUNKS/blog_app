@@ -1,0 +1,52 @@
+require("dotenv").config();
+
+const express = require("express");
+const expressLayout = require("express-ejs-layouts");
+const methodOverride = require("method-override");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+
+const connectDB = require("./server/config.js/db");
+const { isActiveRoute } = require("./server/helpers/routeHelpers");
+
+const app = express();
+const PORT = process.env.PORT || 9000;
+
+connectDB();
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cookieParser());
+app.use(methodOverride("_method"));
+
+// app.use((req, res, next) => {
+//   res.status(404).send("Not Found");
+// });
+
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl:
+        "mongodb+srv://blogger:5pvIIOL9B6jcu9Jl@cluster0.g9mnmkm.mongodb.net/",
+    }),
+  })
+);
+
+app.use(express.static("public"));
+
+app.use(expressLayout);
+app.set("layout", "./layouts/main");
+app.set("view engine", "ejs");
+
+app.locals.isActiveRoute = isActiveRoute;
+
+app.use("/", require("./server/routes/main"));
+app.use("/", require("./server/routes/admin"));
+
+app.listen(PORT, () => {
+  console.log(`app listening on port ${PORT}`);
+});
