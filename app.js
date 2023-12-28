@@ -30,8 +30,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
-      mongoUrl:
-        "mongodb+srv://blogger:5pvIIOL9B6jcu9Jl@cluster0.g9mnmkm.mongodb.net/",
+      mongoUrl: process.env.DATABASE_URL,
     }),
   })
 );

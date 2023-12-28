@@ -3,13 +3,7 @@ const mongoose = require("mongoose");
 const connectDB = async () => {
   try {
     mongoose.set("strictQuery", false);
-    const conn = await mongoose.connect(
-      "mongodb+srv://davrunksvirgiflips:KvCrcBk20wkMe8eP@cluster0.mmerfsp.mongodb.net/",
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
-    );
+    const conn = await mongoose.connect(process.env.DATABASE_URL);
     console.log(`Database Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(error);
